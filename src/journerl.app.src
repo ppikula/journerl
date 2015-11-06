@@ -5,7 +5,9 @@
   {mod, {'journerl_app', []}},
   {applications,
    [kernel,
-    stdlib
+    stdlib,
+    cowboy,
+    lager
    ]},
   {env,[]},
   {modules, []},
