@@ -4,4 +4,4 @@ compile:
 run: compile
 	./rebar3 shell
 
-.PHONY: compile
+.PHONY: compile run
