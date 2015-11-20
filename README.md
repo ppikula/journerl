@@ -1,14 +1,14 @@
 # journerl
 
-# Why
+## Why
 
-# Features
+## Features
 
-# How to use
+## How to use
 
-# Under the hood
+## Under the hood
 
-# For Developers
+## For Developers
 
 `$ npm install --global bower`
 
