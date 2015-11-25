@@ -10,4 +10,5 @@ rel/example_project
 .rebar
 _build
 priv/bower_components/
+priv/node_modules
 log/
