@@ -30,7 +30,10 @@ var config = {
     module: {
         noParse: [],
         loaders: [
-            { test: path.join(__dirname, 'app'),  loader: 'babel-loader' },
+            { test: path.join(__dirname, 'app'),
+              loader: 'babel',
+              query: {presets: ['es2015', 'react']}
+            },
             { test: /\.less$/, loader: "style!css!less" },
             { test: /\.css$/, loaders: ["style", "css"] },
             { test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,   loader: "url?limit=10000&minetype=application/font-woff" },
