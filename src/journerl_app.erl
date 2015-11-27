@@ -29,9 +29,10 @@ stop(_State) ->
 %%====================================================================
 
 start_http() ->
-    Port = application:get_env(journerl, port, 8080),
+    Port = application:get_env(journerl, listen_port, 8080),
+    Interface = application:get_env(journerl, listen_ip, {127,0,0,1}),
     Dispatch = cowboy_router:compile(cowboy_routes()),
-    cowboy:start_http(journerl_http_listener, 100, [{port, Port}],
+    cowboy:start_http(journerl_http_listener, 100, [{port, Port}, {ip, Interface}],
                       [{env, [{dispatch, Dispatch}]}]).
 
 cowboy_routes() ->
