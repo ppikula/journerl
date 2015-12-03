@@ -29,7 +29,8 @@ on production environments. My goal here is to reduce this hassle to one simple 
 ## How to use
 
 The only thing you need to do is add the joernerl repository to list of your dependencies
-and just start the journerl application. By default the web UI listens on the loopback
+and just start the journerl application. Alternatively you can tak a look at the
+*For Developers* section. By default the web UI listens on the loopback
 interface on port 8080. This can be changed using proper application config. For
 example to change it  to 10.0.0.1:9090 set the following values in your `sys.config`:
 
@@ -63,5 +64,13 @@ Having all required dependencies you can run:
 This command is going to download all required JS libraries, transpile them, convert
 assets and place the results in the `priv/build` directory. Right after preparing JS
 the command will start Erlang node with journerl running and listening on previously
-set port(by default 127.0.0.1:8080).
+set port(by default 127.0.0.1:8080). More over this command will start the sync
+application(github.com/rustyio/sync), so all erlang source code changes will be
+reloaded on the fly - no need to re-run `make run` each time you change a source
+file.
+
+To achieve the same functionality as above, but for jsx files, you have to run the
+following command:
+
+`cd priv; webpack -w`
 

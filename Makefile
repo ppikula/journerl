@@ -1,8 +1,8 @@
-compile:
-	./rebar3 compile
+compile_dev:
+	./rebar3 as dev compile
 
-run: compile bower node_modules webpack
-	erl -pa _build/*/lib/*/ebin -eval 'application:ensure_all_started(journerl)'
+run: compile_dev bower node_modules webpack
+	erl -pa _build/*/lib/*/ebin -eval 'application:ensure_all_started(journerl), sync:start()'
 
 bower:
 	cd priv; bower install
