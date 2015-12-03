@@ -29,6 +29,10 @@ webpackJsonp([0],[
 
 	var _c2 = _interopRequireDefault(_c);
 
+	var _shell_panel = __webpack_require__(15);
+
+	var _shell_panel2 = _interopRequireDefault(_shell_panel);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -64,7 +68,8 @@ webpackJsonp([0],[
 	              'Journerl'
 	            )
 	          )
-	        )
+	        ),
+	        _react2.default.createElement(_shell_panel2.default, { ref: 'shellPanel' })
 	      );
 	    }
 	  }]);
@@ -7511,6 +7516,108 @@ webpackJsonp([0],[
 
 	})(window);
 
+
+/***/ },
+/* 15 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/* WEBPACK VAR INJECTION */(function($) {"use strict";
+
+	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(2);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var ShellPanel = (function (_React$Component) {
+	    _inherits(ShellPanel, _React$Component);
+
+	    function ShellPanel(props) {
+	        _classCallCheck(this, ShellPanel);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ShellPanel).call(this, props));
+
+	        _this.state = { shellResults: [] };
+	        return _this;
+	    }
+
+	    _createClass(ShellPanel, [{
+	        key: "addResult",
+	        value: function addResult(result) {
+	            this.state.shellResults.push(result);
+	            this.setState(this.state);
+	        }
+	    }, {
+	        key: "handleKeyDown",
+	        value: function handleKeyDown(e) {
+	            switch (e.keyCode) {
+	                case 13:
+	                    /* RETURN */
+	                    e.preventDefault();
+	                    var commandNode = _react2.default.findDOMNode(this.refs.command);
+	                    this.addResult("# " + commandNode.value);
+	                    this.callExecute(commandNode.value);
+	                    commandNode.value = "";
+	                    break;
+	            }
+	        }
+	    }, {
+	        key: "callExecute",
+	        value: function callExecute(cmdline) {
+	            var n = cmdline.replace(/<\d+\.\d+\.\d+>/g, function r(x) {
+	                return "list_to_pid(\"" + x + "\")";
+	            });
+	            $.post("/api/execute", { cmd: n }, this.handleResult.bind(this));
+	        }
+	    }, {
+	        key: "handleResult",
+	        value: function handleResult(data) {
+	            this.addResult(data);
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            var results = this.state.shellResults;
+	            var shellPanels = [];
+	            for (var i = 0; i < results.length; i++) {
+	                shellPanels.push(_react2.default.createElement(
+	                    "div",
+	                    { className: "row" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "col-md-12" },
+	                        results[i]
+	                    )
+	                ));
+	            }
+	            return _react2.default.createElement(
+	                "div",
+	                { className: "container-fluid" },
+	                shellPanels,
+	                _react2.default.createElement("input", { id: "command", ref: "command", type: "text",
+	                    onKeyDown: this.handleKeyDown.bind(this) })
+	            );
+	        }
+	    }]);
+
+	    return ShellPanel;
+	})(_react2.default.Component);
+
+	exports.default = ShellPanel;
+	;
+	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
 
 /***/ }
 ]);
