@@ -3,6 +3,7 @@ import 'jquery';
 import 'bootstrap/dist/css/bootstrap.css';
 import d3 from 'd3';
 import c3 from 'c3/c3';
+import ShellPanel from './shell_panel.jsx'
 
 class App extends React.Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class App extends React.Component {
             <a className="navbar-brand" href="#">Journerl</a>
           </div>
         </nav>
+        <ShellPanel ref='shellPanel'/>
       </div>
     );
   }
