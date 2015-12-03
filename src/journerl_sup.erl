@@ -35,7 +35,7 @@ init([]) ->
 	 5000,
 	 worker,
 	 [journerl_shell]},
-    {ok, { {one_for_all, 0, 1}, [Shell]} }.
+    {ok, { {one_for_all, 5, 10}, [Shell]} }.
 
 %%====================================================================
 %% Internal functions
