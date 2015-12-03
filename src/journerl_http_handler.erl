@@ -18,5 +18,9 @@ terminate(_Reason, _Req, _State) ->
     ok.
 
 handle_req(<<"POST">>, Req, State) ->
-    {ok, ResReq} = cowboy_req:reply(200, Req),
+    {ok, <<"cmd=", Cmd/binary>>, _} = cowboy_req:body(Req),
+    DCmd = http_uri:decode(binary_to_list(Cmd)),
+    {ok, EvalResult} = journerl_shell:evaluate(DCmd),
+    RBody = list_to_binary(io_lib:format("~p", [EvalResult])),
+    {ok, ResReq} = cowboy_req:reply(200, [], RBody,  Req),
     {ok, ResReq, State}.
