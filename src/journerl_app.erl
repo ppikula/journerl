@@ -37,7 +37,7 @@ start_http() ->
 
 cowboy_routes() ->
     [{'_', [
-            {"/api/shell", journerl_http_handler, []},
+            {"/api/execute", journerl_http_handler, []},
             {"/build/[...]", cowboy_static, {priv_dir, journerl, "build"}},
             {"/", cowboy_static, {priv_file, journerl, "build/index.html"}}
            ]}].
