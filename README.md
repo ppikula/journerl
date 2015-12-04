@@ -15,7 +15,10 @@ summary of your investigation or teaching other developers how to do such things
 I've tried to play with these tool, but in my opinion it requires a lot of hassle
 to get it working, especially installing jupyter deps, which might be not so easy
 on production environments. My goal here is to reduce this hassle to one simple step:
-**add journerl dependecy to the rebar.config file.**
+**add journerl dependecy to the rebar.config file.** Moreover, I want to fix all
+stanard shell's quirks, for instance I want to be able to call the following command:
+`erlang:process_info(<0.27.0>).` (no longer need to call either pid/3 or list_to_pid/1 to
+be able to use values returned by shell using copy-paste techinque;) ).
 
 ## Features
 
