@@ -7521,7 +7521,7 @@ webpackJsonp([0],[
 /* 15 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/* WEBPACK VAR INJECTION */(function($) {"use strict";
+	/* WEBPACK VAR INJECTION */(function($) {'use strict';
 
 	var _createClass = (function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; })();
 
@@ -7549,18 +7549,24 @@ webpackJsonp([0],[
 
 	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ShellPanel).call(this, props));
 
-	        _this.state = { shellResults: [] };
+	        var historyLast = 0;
+	        if (localStorage.historySize) {
+	            historyLast = localStorage.historySize;
+	        } else {
+	            localStorage.setItem('historySize', 0);
+	        }
+	        _this.state = { shellResults: [], historyPosition: Number(historyLast) + 1 };
 	        return _this;
 	    }
 
 	    _createClass(ShellPanel, [{
-	        key: "addResult",
+	        key: 'addResult',
 	        value: function addResult(result) {
 	            this.state.shellResults.push(result);
 	            this.setState(this.state);
 	        }
 	    }, {
-	        key: "handleKeyDown",
+	        key: 'handleKeyDown',
 	        value: function handleKeyDown(e) {
 	            switch (e.keyCode) {
 	                case 13:
@@ -7569,12 +7575,43 @@ webpackJsonp([0],[
 	                    var commandNode = _react2.default.findDOMNode(this.refs.command);
 	                    this.addResult("# " + commandNode.value);
 	                    this.callExecute(commandNode.value);
-	                    commandNode.value = "";
+	                    this.resetPrompt(commandNode);
+	                    break;
+	                case 38:
+	                    /* UP_ARROW */
+	                    e.preventDefault();
+	                    var commandNode = _react2.default.findDOMNode(this.refs.command);
+	                    var currPos = this.state.historyPosition;
+	                    this.state.historyPosition = Math.max(1, currPos - 1);
+	                    var key = "hist_" + this.state.historyPosition;
+	                    commandNode.value = localStorage.getItem(key);
+	                    this.setState(this.state);
+	                    break;
+	                case 40:
+	                    /* DOWN ARROW */
+	                    e.preventDefault();
+	                    var commandNode = _react2.default.findDOMNode(this.refs.command);
+	                    var maxHist = Number(localStorage.historySize);
+	                    var currPos = this.state.historyPosition;
+	                    this.state.historyPosition = Math.min(Number(maxHist) + 1, currPos + 1);
+	                    var key = "hist_" + this.state.historyPosition;
+	                    commandNode.value = localStorage.getItem(key);
+	                    this.setState(this.state);
 	                    break;
 	            }
 	        }
 	    }, {
-	        key: "callExecute",
+	        key: 'resetPrompt',
+	        value: function resetPrompt(commandNode) {
+	            var newPos = Number(localStorage.historySize) + 1;
+	            localStorage.setItem('historySize', newPos);
+	            this.state.historyPosition = newPos + 1;
+	            localStorage.setItem('hist_' + newPos, commandNode.value);
+	            commandNode.value = "";
+	            this.setState(this.state);
+	        }
+	    }, {
+	        key: 'callExecute',
 	        value: function callExecute(cmdline) {
 	            var n = cmdline.replace(/<\d+\.\d+\.\d+>/g, function r(x) {
 	                return "list_to_pid(\"" + x + "\")";
@@ -7582,31 +7619,31 @@ webpackJsonp([0],[
 	            $.post("/api/execute", { cmd: n }, this.handleResult.bind(this));
 	        }
 	    }, {
-	        key: "handleResult",
+	        key: 'handleResult',
 	        value: function handleResult(data) {
 	            this.addResult(data);
 	        }
 	    }, {
-	        key: "render",
+	        key: 'render',
 	        value: function render() {
 	            var results = this.state.shellResults;
 	            var shellPanels = [];
 	            for (var i = 0; i < results.length; i++) {
 	                shellPanels.push(_react2.default.createElement(
-	                    "div",
-	                    { className: "row" },
+	                    'div',
+	                    { className: 'row' },
 	                    _react2.default.createElement(
-	                        "div",
-	                        { className: "col-md-12" },
+	                        'div',
+	                        { className: 'col-md-12' },
 	                        results[i]
 	                    )
 	                ));
 	            }
 	            return _react2.default.createElement(
-	                "div",
-	                { className: "container-fluid" },
+	                'div',
+	                { className: 'container-fluid' },
 	                shellPanels,
-	                _react2.default.createElement("input", { id: "command", ref: "command", type: "text",
+	                _react2.default.createElement('input', { id: 'command', ref: 'command', type: 'text',
 	                    onKeyDown: this.handleKeyDown.bind(this) })
 	            );
 	        }
