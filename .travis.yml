@@ -9,3 +9,5 @@ otp_release:
 script:
     make test
 
+after_success:
+    - erl -noshell -pa _build/test/lib/*/ebin -eval 'ecoveralls:travis_ci("_build/test/cover/eunit.coverdata"), init:stop()'

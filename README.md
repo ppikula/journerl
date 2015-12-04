@@ -1,4 +1,4 @@
-# Journerl [![Build Status](https://travis-ci.org/ppikula/journerl.svg?branch=master)](https://travis-ci.org/ppikula/journerl)
+# Journerl [![Build Status](https://travis-ci.org/ppikula/journerl.svg?branch=master)](https://travis-ci.org/ppikula/journerl) [![Coverage Status](https://coveralls.io/repos/ppikula/journerl/badge.svg?branch=master&service=github)](https://coveralls.io/github/ppikula/journerl?branch=master)
 
 **NOTICE:** right now project is in its early stage AKA: nothing works
 

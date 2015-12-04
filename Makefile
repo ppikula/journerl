@@ -17,6 +17,6 @@ node_modules:
 	cd priv; npm install
 
 test: compile
-	./rebar3 do dialyzer, xref, test
+	./rebar3 do dialyzer, eunit, cover
 
 .PHONY: compile run
