@@ -1,4 +1,4 @@
-# Journerl
+# Journerl [![Build Status](https://travis-ci.org/ppikula/journerl.svg?branch=master)](https://travis-ci.org/ppikula/journerl)
 
 **NOTICE:** right now project is in its early stage AKA: nothing works
 
