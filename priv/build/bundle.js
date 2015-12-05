@@ -7573,7 +7573,7 @@ webpackJsonp([0],[
 	                    /* RETURN */
 	                    e.preventDefault();
 	                    var commandNode = _react2.default.findDOMNode(this.refs.command);
-	                    this.addResult("# " + commandNode.value);
+	                    this.addResult(commandNode.value);
 	                    this.callExecute(commandNode.value);
 	                    this.resetPrompt(commandNode);
 	                    break;
@@ -7639,14 +7639,28 @@ webpackJsonp([0],[
 	        value: function render() {
 	            var results = this.state.shellResults;
 	            var shellPanels = [];
-	            for (var i = 0; i < results.length; i++) {
+	            for (var i = 0; i < results.length; i += 2) {
 	                shellPanels.push(_react2.default.createElement(
 	                    'div',
 	                    { className: 'row' },
 	                    _react2.default.createElement(
 	                        'div',
 	                        { className: 'col-md-12' },
-	                        results[i]
+	                        _react2.default.createElement(
+	                            'div',
+	                            { className: 'panel panel-default' },
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'panel-heading' },
+	                                results[i]
+	                            ),
+	                            _react2.default.createElement(
+	                                'div',
+	                                { className: 'panel-body' },
+	                                ' ',
+	                                results[i + 1]
+	                            )
+	                        )
 	                    )
 	                ));
 	            }

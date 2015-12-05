@@ -22,7 +22,7 @@ export default class ShellPanel extends React.Component {
             case 13: /* RETURN */
                 e.preventDefault();
                 var commandNode = React.findDOMNode(this.refs.command);
-                this.addResult("# " + commandNode.value);
+                this.addResult( commandNode.value);
                 this.callExecute(commandNode.value);
                 this.resetPrompt(commandNode);
                 break;
@@ -80,11 +80,14 @@ export default class ShellPanel extends React.Component {
     render() {
         var results = this.state.shellResults;
         var shellPanels = [];
-        for (var i = 0; i < results.length; i++) {
+        for (var i = 0; i < results.length; i+=2) {
             shellPanels.push(
                     <div className="row">
                        <div className="col-md-12">
-                             {results[i]}
+                         <div className="panel panel-default">
+                              <div className="panel-heading">{results[i]}</div>
+                              <div className="panel-body"> {results[i+1]}</div>
+                         </div>
                        </div>
                     </div>
                     )
