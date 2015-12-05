@@ -86,7 +86,7 @@ safe_eval(Expr, Context) ->
         {value, Res, NewContext}  = erl_eval:exprs(Expr, Context),
         {ok, Res, NewContext}
     catch
-        Type:Exception -> {error, {Type, Exception}}
+        Type:Exception -> {error, {Type, Exception, erlang:get_stacktrace()}}
     end.
 
 maybe_add_dot(Input) ->

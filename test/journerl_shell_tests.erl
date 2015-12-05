@@ -52,7 +52,8 @@ add_dot(_) ->
 
 undef_function(_) ->
     [
-     ?_assertEqual({ok, {error, undef}}, ?eval("nondefinedmod:nonexisting_function()."))
+     ?_assertMatch({ok, {error, undef, _}},
+                   ?eval("nondefinedmod:nonexisting_function()."))
     ].
 
 syntax_error(_) ->
