@@ -58,10 +58,20 @@ export default class ShellPanel extends React.Component {
     }
 
     callExecute(cmdline) {
-        var n = cmdline.replace(/<\d+\.\d+\.\d+>/g, function r(x)
-                {return "list_to_pid(\""+x+"\")"});
-        $.post("/api/execute", {cmd: n}, this.handleResult.bind(this))
+        var pid_regex = /<\d+\.\d+\.\d+>/g;
+        var port_regex = /#Port<\d+\.\d+>/g;
+        var processed1 = cmdline.replace(pid_regex, this.wrap_pid.bind(this));
+        var processed2 = processed1.replace(port_regex, this.wrap_port.bind(this));
+        $.post("/api/execute", {cmd: processed2}, this.handleResult.bind(this))
     };
+
+    wrap_pid(x) {
+        return "list_to_pid(\""+x+"\")";
+    }
+
+    wrap_port(x) {
+        return "recon_lib:term_to_port(\"" + x + "\")";
+    }
 
     handleResult(data) {
         this.addResult(data);
