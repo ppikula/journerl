@@ -26,6 +26,7 @@ start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 evaluate(String) ->
+    lager:info("Evaluating: ~p", [String]),
     gen_server:call(?MODULE, {eval, String}).
 
 %%%===================================================================
