@@ -17,6 +17,7 @@
 
 -record(state, {context}).
 
+-define(DOT, $.).
 %%%===================================================================
 %%% API functions
 %%%===================================================================
@@ -25,8 +26,9 @@ start_link() ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, [], []).
 
 evaluate(String) ->
-    lager:info("Evaluating: ~p", [String]),
-    gen_server:call(?MODULE, {eval, String}).
+    Input = maybe_add_dot(String),
+    lager:info("Evaluating: ~p", [Input]),
+    gen_server:call(?MODULE, {eval, Input}).
 
 stop() ->
     lager:info("Stopping shell"),
@@ -65,3 +67,8 @@ code_change(_OldVsn, State, _Extra) ->
 %%%===================================================================
 %%% Internal functions
 %%%===================================================================
+maybe_add_dot(Input) ->
+    case lists:last(Input) of
+        ?DOT -> Input;
+        _ -> Input ++ "."
+    end.

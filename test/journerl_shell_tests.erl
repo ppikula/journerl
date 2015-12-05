@@ -12,7 +12,9 @@ simple_calls_test_() ->
      {"bind variable",
        ?setup(fun bind_variable/1)},
      {"call functions",
-       ?setup(fun call_function/1)}
+       ?setup(fun call_function/1)},
+     {"add dot at the end if not present",
+       ?setup(fun add_dot/1)}
     ].
 
 single_atom(_) ->
@@ -32,8 +34,14 @@ call_function(Pid) ->
      ?_assertEqual({ok, Pid}, ?eval("self().")),
      ?_assertEqual({ok, <<"5">>}, ?eval("erlang:integer_to_binary(5).")),
      ?_assertMatch({ok, _}, ?eval("F = fun() -> ok end.")),
-     ?_assertMatch({ok, ok}, ?eval("F()."))
+     ?_assertEqual({ok, ok}, ?eval("F()."))
     ].
+
+add_dot(_) ->
+    [
+     ?_assertEqual({ok, <<"5">>}, ?eval("erlang:integer_to_binary(5)"))
+    ].
+
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%% SETUP FUNCTIONS %%%
