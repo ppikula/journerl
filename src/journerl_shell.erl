@@ -3,7 +3,9 @@
 -behaviour(gen_server).
 
 %% API functions
--export([start_link/0]).
+-export([start_link/0,
+         stop/0,
+         evaluate/1]).
 
 %% gen_server callbacks
 -export([init/1,
@@ -12,9 +14,6 @@
          handle_info/2,
          terminate/2,
          code_change/3]).
-
-%% api
--export([evaluate/1]).
 
 -record(state, {context}).
 
@@ -29,6 +28,10 @@ evaluate(String) ->
     lager:info("Evaluating: ~p", [String]),
     gen_server:call(?MODULE, {eval, String}).
 
+stop() ->
+    lager:info("Stopping shell"),
+    gen_server:call(?MODULE, stop).
+
 %%%===================================================================
 %%% gen_server callbacks
 %%%===================================================================
@@ -36,6 +39,8 @@ evaluate(String) ->
 init([]) ->
     {ok, #state{context = erl_eval:new_bindings()}}.
 
+handle_call(stop, _From, State) ->
+    {stop, normal, State};
 handle_call({eval, String}, _From, State) ->
     {ok, Ts, _} = erl_scan:string(String),
     {ok, Expr} = erl_parse:parse_exprs(Ts),
