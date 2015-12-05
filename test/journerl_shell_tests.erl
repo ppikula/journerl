@@ -17,6 +17,14 @@ simple_calls_test_() ->
        ?setup(fun add_dot/1)}
     ].
 
+error_calls_test_() ->
+    [
+     {"undefined function call",
+       ?setup(fun undef_function/1)},
+     {"parsing error",
+       ?setup(fun syntax_error/1)}
+    ].
+
 single_atom(_) ->
     ?_assertEqual({ok, ok}, ?eval("ok.")).
 
@@ -42,6 +50,16 @@ add_dot(_) ->
      ?_assertEqual({ok, <<"5">>}, ?eval("erlang:integer_to_binary(5)"))
     ].
 
+undef_function(_) ->
+    [
+     ?_assertEqual({ok, {error, undef}}, ?eval("nondefinedmod:nonexisting_function()."))
+    ].
+
+syntax_error(_) ->
+    [
+     ?_assertEqual({ok, "Syntax error in the input line"},
+                   ?eval("jd092.c212c12/."))
+    ].
 
 %%%%%%%%%%%%%%%%%%%%%%%
 %%% SETUP FUNCTIONS %%%

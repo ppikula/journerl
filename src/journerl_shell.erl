@@ -44,10 +44,8 @@ init([]) ->
 handle_call(stop, _From, State) ->
     {stop, normal, State};
 handle_call({eval, String}, _From, State) ->
-    {ok, Ts, _} = erl_scan:string(String),
-    {ok, Expr} = erl_parse:parse_exprs(Ts),
-    {value, Res, NewContext}  = erl_eval:exprs(Expr, State#state.context),
-    {reply, {ok, Res}, State#state{context = NewContext}};
+    {ok, Tokens, _} = erl_scan:string(String),
+    parse_and_eval(Tokens, State);
 handle_call(_Request, _From, State) ->
     Reply = ok,
     {reply, Reply, State}.
@@ -67,6 +65,30 @@ code_change(_OldVsn, State, _Extra) ->
 %%%===================================================================
 %%% Internal functions
 %%%===================================================================
+parse_and_eval(Tokens, State) ->
+    case erl_parse:parse_exprs(Tokens) of
+        {ok, Expr} ->
+            eval(Expr, State);
+        _ ->
+            {reply, {ok, "Syntax error in the input line"}, State}
+    end.
+
+eval(Expr, State) ->
+    case safe_eval(Expr, State#state.context) of
+        {ok, Res, Ctx} ->
+            {reply, {ok, Res}, State#state{context = Ctx}};
+        {error, Res} ->
+            {reply, {ok, Res}, State}
+    end.
+
+safe_eval(Expr, Context) ->
+    try
+        {value, Res, NewContext}  = erl_eval:exprs(Expr, Context),
+        {ok, Res, NewContext}
+    catch
+        Type:Exception -> {error, {Type, Exception}}
+    end.
+
 maybe_add_dot(Input) ->
     case lists:last(Input) of
         ?DOT -> Input;
